@@ -23,7 +23,7 @@ const CartItem = ({ onContinueShopping }) => {
     };
 
     const handleCheckoutShopping = (e) => {
-        alert('Functionality to be added for future reference');
+        alert('🚀 Coming Soon!\nNew features are on the way. Stay tuned for updates!');
     };
 
     const handleIncrement = (item) => {
