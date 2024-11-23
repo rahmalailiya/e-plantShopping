@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from './CartSlice';
 function ProductList() {
+    const dispatch = useDispatch()
+    const cartItems = useSelector(state => state.cart.items)
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({})
-    const [totalItems, setTotalItems] = useState(0)
-    const dispatch = useDispatch()
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -257,8 +257,20 @@ function ProductList() {
             ...prevState,
             [product.name]: true
         }))
-        setTotalItems((prevTotal) => prevTotal + 1);
     }
+
+     // Sinkronkan `addedToCart` dengan isi keranjang
+     useEffect(() => {
+        const updatedAddedToCart = {};
+        cartItems.forEach((item) => {
+            updatedAddedToCart[item.name] = true;
+        });
+        setAddedToCart(updatedAddedToCart);
+    }, [cartItems]); 
+    
+     // Hitung total item berdasarkan jumlah kuantitas produk
+    const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+    
     return (
         <div>
             <div className="navbar" style={styleObj}>
